@@ -23,6 +23,10 @@ function PhotosShow(props) {
     });
   };
 
+  const handleClick = () => {
+    props.onDestroyPhoto(props.photo);
+  };
+
   return (
     <div>
       <h1>Photo information</h1>
@@ -41,6 +45,7 @@ function PhotosShow(props) {
         </div>
         <button type="submit">Update photo</button>
       </form>
+      <button onClick={handleClick}>Destroy photo</button>
     </div>
   );
 }

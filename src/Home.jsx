@@ -50,12 +50,24 @@ function Home() {
     });
   };
 
+  const handleDestroyPhoto = (photo) => {
+    console.log("handleDestroyPhoto", photo);
+    axios.delete(`http://localhost:3000/photos/${photo.id}.json`).then((response) => {
+      setPhotos(photos.filter((p) => p.id !== photo.id));
+      handleHidePhoto();
+    });
+  };
+
   return (
     <div>
       <PhotosNew onCreatePhoto={handleCreatePhoto} />
       <PhotosIndex photos={photos} onShowPhoto={handleShowPhoto} />
       <Modal show={currentPhoto.id} onCloseModal={handleHidePhoto}>
-        <PhotosShow photo={currentPhoto} onUpdatePhoto={handleUpdatePhoto} />
+        <PhotosShow
+          photo={currentPhoto}
+          onUpdatePhoto={handleUpdatePhoto}
+          onDestroyPhoto={handleDestroyPhoto}
+        />
       </Modal>
     </div>
   );

@@ -33,12 +33,29 @@ function Home() {
     setCurrentPhoto({});
   };
 
+  const handleUpdatePhoto = (params, successCallback) => {
+    console.log("handleUpdatePhoto", params);
+    axios.patch(`http://localhost:3000/photos/${params.id}.json`, params).then((response) => {
+      setPhotos(
+        photos.map((photo) => {
+          if (photo.id === response.data.id) {
+            return response.data;
+          } else {
+            return photo;
+          }
+        })
+      );
+      successCallback();
+      handleHidePhoto();
+    });
+  };
+
   return (
     <div>
       <PhotosNew onCreatePhoto={handleCreatePhoto} />
       <PhotosIndex photos={photos} onShowPhoto={handleShowPhoto} />
       <Modal show={currentPhoto.id} onCloseModal={handleHidePhoto}>
-        <PhotosShow photo={currentPhoto} />
+        <PhotosShow photo={currentPhoto} onUpdatePhoto={handleUpdatePhoto} />
       </Modal>
     </div>
   );

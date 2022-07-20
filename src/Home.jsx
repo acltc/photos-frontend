@@ -3,6 +3,8 @@ import axios from "axios";
 
 import PhotosIndex from "./PhotosIndex";
 import PhotosNew from "./PhotosNew";
+import PhotosShow from "./PhotosShow";
+import Modal from "./Modal";
 
 function Home() {
   const [photos, setPhotos] = useState([]);
@@ -13,6 +15,8 @@ function Home() {
     });
   }, []);
 
+  const [currentPhoto, setCurrentPhoto] = useState({});
+
   const handleCreatePhoto = (params, successCallback) => {
     console.log("handleCreatePhoto", params);
     axios.post("http://localhost:3000/photos.json", params).then((response) => {
@@ -21,10 +25,21 @@ function Home() {
     });
   };
 
+  const handleShowPhoto = (photo) => {
+    setCurrentPhoto(photo);
+  };
+
+  const handleHidePhoto = () => {
+    setCurrentPhoto({});
+  };
+
   return (
     <div>
       <PhotosNew onCreatePhoto={handleCreatePhoto} />
-      <PhotosIndex photos={photos} />
+      <PhotosIndex photos={photos} onShowPhoto={handleShowPhoto} />
+      <Modal show={currentPhoto.id} onCloseModal={handleHidePhoto}>
+        <PhotosShow photo={currentPhoto} />
+      </Modal>
     </div>
   );
 }
